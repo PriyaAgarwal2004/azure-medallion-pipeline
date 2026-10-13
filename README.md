@@ -13,6 +13,7 @@ and growing it into an Azure-style medallion architecture
 - [x] Real dataset with thousands of rows
 - [x] Raw files saved as bronze layer
 - [x] Clean silver layer (typed columns, Parquet files)
+- [x] Gold layer: daily city summaries in SQLite
 - [ ] Incremental loads (no duplicates)
 - [ ] Tests with pytest
 - [ ] Azure: ADLS Gen2, Databricks, Data Factory
@@ -23,4 +24,5 @@ and growing it into an Azure-style medallion architecture
 pip install requests pandas pyarrow
 python src/extract.py
 python src/transform.py
+python src/gold.py
 ```
