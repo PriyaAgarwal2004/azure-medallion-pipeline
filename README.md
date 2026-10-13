@@ -19,6 +19,8 @@ and growing it into an Azure-style medallion architecture
 
 ## How to run
 
+```
 pip install requests pandas pyarrow
 python src/extract.py
 python src/transform.py
+```
