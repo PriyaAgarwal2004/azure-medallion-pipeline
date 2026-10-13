@@ -1,0 +1,6 @@
+name,age,city,score,score_missing,age_missing
+Asha,23.0,Pune,78.0,False,False
+Ravi,25.0,Mumbai,91.0,False,False
+Meena,22.0,Pune,65.0,False,False
+John,,Delhi,88.0,False,True
+Sara,26.0,Mumbai,,True,False
