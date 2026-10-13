@@ -10,8 +10,8 @@ and growing it into an Azure-style medallion architecture
 - [x] Transform nested JSON into a clean table
 - [x] Load into SQLite
 - [x] Logging
-- [ ] Real dataset with thousands of rows
-- [ ] Raw files saved as bronze layer
+- [x] Real dataset with thousands of rows
+- [x] Raw files saved as bronze layer
 - [ ] Incremental loads (no duplicates)
 - [ ] Tests with pytest
 - [ ] Azure: ADLS Gen2, Databricks, Data Factory
@@ -20,3 +20,5 @@ and growing it into an Azure-style medallion architecture
 
 pip install requests pandas
 python src/pipeline.py
+
+python src/extract.py
