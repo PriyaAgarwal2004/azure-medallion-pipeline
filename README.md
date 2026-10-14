@@ -24,17 +24,18 @@ flowchart LR
 
 ## Current status
 
-- [x] Extract from a public API with error handling
-- [x] Transform nested JSON into a clean table
-- [x] Load into SQLite
-- [x] Logging
-- [x] Real dataset with thousands of rows
-- [x] Raw files saved as bronze layer
-- [x] Clean silver layer (typed columns, Parquet files)
-- [x] Gold layer: daily city summaries in SQLite
-- [x] Incremental loads (no duplicates)
-- [x] Tests with pytest
-- [ ] Azure: ADLS Gen2, Databricks, Data Factory
+- [x] Bronze: download raw hourly weather for several cities
+- [x] Silver: typed columns, one Parquet file per city
+- [x] Gold: daily min, average and max per city, in SQLite
+- [x] Idempotent load (upsert, safe to re-run)
+- [x] Unit tests with pytest
+- [x] Shared settings in one config file
+- [ ] Azure: ADLS Gen2 storage for bronze and silver
+- [ ] Azure: Data Factory to schedule the pipeline
+- [ ] Azure: Key Vault for secrets
+- [ ] Data quality checks and run logging
+
+A smaller first exercise (users API into SQLite) is in `examples/`.
 
 ## How to run
 
