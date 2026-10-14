@@ -41,8 +41,29 @@ A smaller first exercise (users API into SQLite) is in `examples/`.
 
 ```
 pip install requests pandas pyarrow pytest
-python src/extract.py
-python src/transform.py
-python src/gold.py
+python src/run_pipeline.py
 pytest
 ```
+
+## Design decisions
+
+- **Bronze keeps the raw API response unchanged**, so silver and gold can be
+  rebuilt at any time without calling the API again.
+- **Silver uses Parquet**, not CSV, because it keeps column types (dates stay
+  dates) and is the standard format for Azure data lakes.
+- **Gold is loaded with an upsert** on (city, date), so re-running the pipeline
+  never creates duplicates. A pytest test covers this.
+- **Data quality checks run before silver is written.** Missing values,
+  duplicate timestamps and impossible temperatures stop the run with a clear error.
+- **Extract retries timeouts and connection errors** up to 3 times with a
+  growing wait. Other errors, such as a 404, fail straight away because a
+  retry wouldn't help.
+- **Settings live in one file** (`src/config.py`) so cities, dates and paths
+  are never repeated across scripts.
+
+## Known limitations
+
+- Runs locally; storage is local folders and SQLite.
+- Fixed date range, no scheduling yet.
+- Only temperature is downloaded.
+- Azure deployment is the next step.
