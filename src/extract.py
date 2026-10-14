@@ -2,9 +2,9 @@ import json
 from pathlib import Path
 
 import requests
+from config import BRONZE_DIR, CITIES, START_DATE, END_DATE
 
 API_URL = "https://archive-api.open-meteo.com/v1/archive"
-BRONZE_DIR = Path("data/bronze")
 
 
 def extract_weather(latitude, longitude, start_date, end_date):
@@ -29,8 +29,8 @@ def save_bronze(raw, city):
         json.dump(raw, f)
     return file_path
 
-
 if __name__ == "__main__":
-    raw = extract_weather(19.07, 72.88, "2025-01-01", "2025-12-31")
-    path = save_bronze(raw, "mumbai")
-    print("Saved", len(raw["hourly"]["time"]), "rows to", path)
+    for city, (lat, lon) in CITIES.items():
+        raw = extract_weather(lat, lon, START_DATE, END_DATE)
+        path = save_bronze(raw, city)
+        print("Saved", len(raw["hourly"]["time"]), "rows to", path)

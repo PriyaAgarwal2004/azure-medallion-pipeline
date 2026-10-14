@@ -3,10 +3,7 @@ from pathlib import Path
 
 import pandas as pd
 
-BRONZE_DIR = Path("data/bronze")
-SILVER_DIR = Path("data/silver")
-CITIES = ["pune", "mumbai"]
-
+from config import BRONZE_DIR, SILVER_DIR, CITIES
 
 def transform_weather(city):
     """Read a bronze JSON file and return a clean table (DataFrame)."""

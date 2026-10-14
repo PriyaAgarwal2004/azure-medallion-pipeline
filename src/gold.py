@@ -3,9 +3,7 @@ from pathlib import Path
 
 import pandas as pd
 
-SILVER_DIR = Path("data/silver")
-GOLD_DB = "data/gold.db"
-CITIES = ["pune", "mumbai"]
+from config import SILVER_DIR, GOLD_DB, CITIES
 
 TEMP_COLS = ["avg_temp", "min_temp", "max_temp"]
 
