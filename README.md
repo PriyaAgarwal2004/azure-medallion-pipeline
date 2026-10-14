@@ -8,12 +8,12 @@ and growing it into an Azure-style medallion architecture
 
 ```mermaid
 flowchart LR
-    A["Open-Meteo API"] --> B["extract.py"]
-    B --> C["Bronze: raw JSON"]
-    C --> D["transform.py"]
-    D --> E["Silver: typed Parquet"]
-    E --> F["gold.py"]
-    F --> G["Gold: daily_weather in SQLite"]
+    A[Open-Meteo API] --> B[extract.py]
+    B --> C[Bronze raw JSON]
+    C --> D[transform.py]
+    D --> E[Silver Parquet]
+    E --> F[gold.py]
+    F --> G[Gold SQLite]
 ```
 
 | Layer | What it holds | Written by |
