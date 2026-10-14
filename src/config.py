@@ -1,3 +1,4 @@
+import logging
 from pathlib import Path
 
 DATA_DIR = Path("data")
@@ -13,3 +14,11 @@ CITIES = {
     "pune": (18.52, 73.86),
     "mumbai": (19.07, 72.88),
 }
+
+def setup_logging():
+    """Write log lines to pipeline.log, with a timestamp on each."""
+    logging.basicConfig(
+        filename="pipeline.log",
+        level=logging.INFO,
+        format="%(asctime)s %(levelname)s %(message)s",
+    )

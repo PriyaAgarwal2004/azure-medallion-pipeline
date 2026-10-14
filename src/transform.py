@@ -1,9 +1,9 @@
 import json
 from pathlib import Path
-
+import logging
 import pandas as pd
 
-from config import BRONZE_DIR, SILVER_DIR, CITIES
+from config import BRONZE_DIR, SILVER_DIR, CITIES, setup_logging
 
 def transform_weather(city):
     """Read a bronze JSON file and return a clean table (DataFrame)."""
@@ -40,7 +40,15 @@ def validate_hourly(df, city):
 
 
 if __name__ == "__main__":
+    setup_logging()
+    logging.info("Transform started")
     for city in CITIES:
-        df = transform_weather(city)
+        try:
+            df = transform_weather(city)
+        except ValueError as e:
+            logging.error("Validation failed: %s", e)    # record why, then stop
+            raise
         path = save_silver(df, city)
+        logging.info("Saved %s rows to %s", len(df), path)
         print("Saved", len(df), "rows to", path)
+    logging.info("Transform finished")

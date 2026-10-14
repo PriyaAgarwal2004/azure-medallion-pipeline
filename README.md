@@ -33,7 +33,7 @@ flowchart LR
 - [ ] Azure: ADLS Gen2 storage for bronze and silver
 - [ ] Azure: Data Factory to schedule the pipeline
 - [ ] Azure: Key Vault for secrets
-- [ ] Data quality checks and run logging
+- [x] Data quality checks and run logging
 
 A smaller first exercise (users API into SQLite) is in `examples/`.
 

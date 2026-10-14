@@ -1,9 +1,9 @@
 import sqlite3
 from pathlib import Path
-
+import logging
 import pandas as pd
 
-from config import SILVER_DIR, GOLD_DB, CITIES
+from config import SILVER_DIR, GOLD_DB, CITIES, setup_logging
 
 TEMP_COLS = ["avg_temp", "min_temp", "max_temp"]
 
@@ -79,11 +79,14 @@ FROM daily_weather
 GROUP BY city
 """
 
-
 if __name__ == "__main__":
+    setup_logging()
+    logging.info("Gold started")
     hourly = load_silver(CITIES)
     daily = build_daily(hourly)
     save_gold(daily, GOLD_DB)
+    logging.info("Saved %s rows to %s", len(daily), GOLD_DB)
     print("Saved", len(daily), "rows to", GOLD_DB)
     print(run_query(GOLD_DB, "SELECT COUNT(*) AS rows_in_table FROM daily_weather"))
     print(run_query(GOLD_DB, YEARLY_SUMMARY))
+    logging.info("Gold finished")
