@@ -4,6 +4,24 @@ A learning project: building a data pipeline in Python, step by step,
 and growing it into an Azure-style medallion architecture
 (bronze, silver, gold).
 
+## Architecture
+
+```mermaid
+flowchart LR
+    A["Open-Meteo API"] --> B["extract.py"]
+    B --> C["Bronze: raw JSON"]
+    C --> D["transform.py"]
+    D --> E["Silver: typed Parquet"]
+    E --> F["gold.py"]
+    F --> G["Gold: daily_weather in SQLite"]
+```
+
+| Layer | What it holds | Written by |
+|---|---|---|
+| Bronze | Raw API response, unchanged | `src/extract.py` |
+| Silver | Hourly data with real date-times, one file per city | `src/transform.py` |
+| Gold | One row per city per day (average, min, max), upserted | `src/gold.py` |
+
 ## Current status
 
 - [x] Extract from a public API with error handling
