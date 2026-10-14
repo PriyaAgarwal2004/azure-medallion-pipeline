@@ -15,14 +15,15 @@ and growing it into an Azure-style medallion architecture
 - [x] Clean silver layer (typed columns, Parquet files)
 - [x] Gold layer: daily city summaries in SQLite
 - [ ] Incremental loads (no duplicates)
-- [ ] Tests with pytest
+- [x] Tests with pytest
 - [ ] Azure: ADLS Gen2, Databricks, Data Factory
 
 ## How to run
 
 ```
-pip install requests pandas pyarrow
+pip install requests pandas pyarrow pytest
 python src/extract.py
 python src/transform.py
 python src/gold.py
+pytest
 ```
