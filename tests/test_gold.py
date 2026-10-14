@@ -1,6 +1,6 @@
+import sqlite3
 import pandas as pd
-
-from gold import build_daily
+from gold import build_daily, save_gold
 
 
 def make_hourly():
@@ -33,3 +33,26 @@ def test_min_avg_max_values():
     assert row["min_temp"] == 10.0
     assert row["max_temp"] == 30.0
     assert row["avg_temp"] == 20.0           # (12 x 10 + 12 x 30) / 24
+
+
+def test_upsert_updates_without_duplicating(tmp_path):
+    db = str(tmp_path / "test.db")           # a throwaway database file
+
+    day = pd.DataFrame({
+        "city": ["pune"], "date": ["2025-01-01"],
+        "avg_temp": [20.0], "min_temp": [10.0], "max_temp": [30.0],
+    })
+    save_gold(day, db)                        # first load
+
+    corrected = day.copy()
+    corrected["avg_temp"] = 25.0              # same day, new value
+    save_gold(corrected, db)                  # second load
+
+    conn = sqlite3.connect(db)
+    count, avg = conn.execute(
+        "SELECT COUNT(*), MAX(avg_temp) FROM daily_weather"
+    ).fetchone()
+    conn.close()
+
+    assert count == 1                         # no duplicate row
+    assert avg == 25.0                        # the value was updated

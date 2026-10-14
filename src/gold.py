@@ -35,9 +35,32 @@ def build_daily(df):
 
 
 def save_gold(daily, db_path):
-    """Write the daily table into a SQLite database."""
+    """Upsert the daily table: update existing days, insert new ones."""
     conn = sqlite3.connect(db_path)
-    daily.to_sql("daily_weather", conn, if_exists="replace", index=False)
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS daily_weather (
+            city     TEXT,
+            date     TEXT,
+            avg_temp REAL,
+            min_temp REAL,
+            max_temp REAL,
+            PRIMARY KEY (city, date)
+        )
+    """)
+
+    columns = ["city", "date", "avg_temp", "min_temp", "max_temp"]
+    rows = list(daily[columns].itertuples(index=False, name=None))
+
+    conn.executemany("""
+        INSERT INTO daily_weather (city, date, avg_temp, min_temp, max_temp)
+        VALUES (?, ?, ?, ?, ?)
+        ON CONFLICT (city, date) DO UPDATE SET
+            avg_temp = excluded.avg_temp,
+            min_temp = excluded.min_temp,
+            max_temp = excluded.max_temp
+    """, rows)
+
+    conn.commit()
     conn.close()
 
 
@@ -64,4 +87,5 @@ if __name__ == "__main__":
     daily = build_daily(hourly)
     save_gold(daily, GOLD_DB)
     print("Saved", len(daily), "rows to", GOLD_DB)
+    print(run_query(GOLD_DB, "SELECT COUNT(*) AS rows_in_table FROM daily_weather"))
     print(run_query(GOLD_DB, YEARLY_SUMMARY))

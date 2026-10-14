@@ -14,7 +14,7 @@ and growing it into an Azure-style medallion architecture
 - [x] Raw files saved as bronze layer
 - [x] Clean silver layer (typed columns, Parquet files)
 - [x] Gold layer: daily city summaries in SQLite
-- [ ] Incremental loads (no duplicates)
+- [x] Incremental loads (no duplicates)
 - [x] Tests with pytest
 - [ ] Azure: ADLS Gen2, Databricks, Data Factory
 
